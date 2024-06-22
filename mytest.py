@@ -8,7 +8,7 @@ from gi.repository import Gtk, Adw, GObject, Gio, Pango
 import sadb, sadb.database, url_images
 
 
-category_index = {}
+category_index = {"all": Gio.ListStore()}
 
 
 def stores_from_database():
@@ -18,10 +18,12 @@ def stores_from_database():
 
     return_store = Gio.ListStore()
     for app in apps_columns:
-        if not app[4].endswith(","):
-            app[4] += ","
-        if not app[5].endswith(","):
-            app[5] += ","
+        categories = app[4]
+        keywords = app[5]
+        if not categories.endswith(","):
+            categories += ","
+        if not keywords.endswith(","):
+            keywords += ","
 
         app_store = Gio.ListStore()
         app_store.append(Gtk.StringObject.new(app[0]))
@@ -38,14 +40,15 @@ def stores_from_database():
             app_store.append(Gtk.StringObject.new(app[3]))
 
         for category in category_index.keys():
-            if category in app[4] or category in app[5]:
+            if category in categories or category in keywords:
                 category_index[category].append(app_store)
+        category_index["all"].append(app_store)
 
 
 class AppView(Gtk.GridView):
     def __init__(self, category: str):
         category_index[category] = Gio.ListStore()
-        super().__init__(model=category_index[category], factory=AppFactory())
+        super().__init__(model=Gtk.NoSelection.new(category_index[category]), factory=AppGridFactory())
 
 
 class AppGridFactory(Gtk.SignalListItemFactory):
@@ -63,39 +66,54 @@ class AppGridFactory(Gtk.SignalListItemFactory):
     def setup(self, factory, list_item):
         main_box = Gtk.Box(
             orientation=Gtk.Orientation.HORIZONTAL,
-            margin_top=5,
-            margin_bottom=5,
-            margin_start=5,
-            margin_end=15,
             spacing=15
         )
+        main_box.add_css_class("card")
+
         self.image = Gtk.Image(
-            halign=Gtk.Alignment.START,
+            halign=Gtk.Align.START,
             icon_name="image-missing-symbolic",
             pixel_size=32,
-            valign=Gtk.Alignment.CENTER
+            valign=Gtk.Align.CENTER,
+            margin_start=15
         )
         main_box.append(self.image)
 
-        label_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        label_box = Gtk.Box(
+            orientation=Gtk.Orientation.VERTICAL,
+            margin_top=15,
+            margin_bottom=15,
+            margin_end=15
+        )
         self.name = Gtk.Label(
             ellipsize=Pango.EllipsizeMode.END,
             xalign=0
         )
-        self.name.add_style_class("title-4")
+        self.name.add_css_class("title-4")
+        label_box.append(self.name)
         self.author = Gtk.Label(
             ellipsize=Pango.EllipsizeMode.END,
             xalign=0
         )
-        self.author.add_style_class("dim-label")
+        self.author.add_css_class("dim-label")
+        label_box.append(self.author)
+        main_box.append(label_box)
 
-
+        list_item.set_child(main_box)
 
     def bind(self, factory, list_item):
-        list_item.get_child().bind(list_item.get_item())
+        item = list_item.get_item()
+        self.name.set_label(item[1].get_string())
+
+        if item[2]:
+            self.author.set_label(item[2].get_string())
+        else:
+            self.author.set_visible(False)
 
     def unbind(self, factory, list_item):
-        list_item.get_child().unbind()
+        self.name.set_label("")
+        self.author.set_label("")
+        self.author.set_visible(True)
 
     def teardown(self, factory, list_item):
         pass
@@ -103,7 +121,25 @@ class AppGridFactory(Gtk.SignalListItemFactory):
 
 class Test(Gtk.Box):
     def __init__(self):
-        super().__init__()
-        factory = Factory()
-        list_view = Gtk.GridView.new(Gtk.SingleSelection.new(store), factory)
-        self.append(list_view)
+        super().__init__(orientation=Gtk.Orientation.VERTICAL)
+
+        # Create a new Adw.TabView
+        self.tab_view = Adw.TabView()
+        self.append(self.tab_view)
+
+        # Define the categories
+        categories = ["AudioVideo", "Development", "Education", "Game", "Graphics", "all"]
+
+        # Create an AppView for each category and add it to the tab view
+        for category in categories:
+            app_view = AppView(category)
+            self.tab_view.append(app_view)
+
+        # Create a new Adw.TabBar
+        self.tab_bar = Adw.TabBar()
+        self.tab_bar.set_view(self.tab_view)
+        self.tab_bar.set_valign(Gtk.Align.START)
+        self.tab_bar.set_vexpand(False)
+        self.prepend(self.tab_bar)
+        stores_from_database()
+
