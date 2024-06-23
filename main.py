@@ -10,6 +10,7 @@ class MyWindow(Gtk.ApplicationWindow):
         self.set_title("Test Window")
 
         self.scroll = Gtk.ScrolledWindow()
+        self.scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         self.set_child(self.scroll)
 
         test = mytest.Test()
