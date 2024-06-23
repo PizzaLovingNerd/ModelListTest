@@ -4,10 +4,11 @@
 <interface>
   <template class="GtkListItem">
     <property name="child">
-      <object class = "AdwBin">
+      <object class="GtkButton">
         <property name="valign">start</property>
         <property name="vexpand">false</property>
         <property name="halign">fill</property>
+        <property name="hexpand">false</property>
         <property name="width-request">275</property>
         <property name="height-request">-1</property>
         <style>
@@ -17,8 +18,10 @@
           <object class="GtkBox">
             <property name="orientation">horizontal</property>
             <property name="spacing">15</property>
-            <property name="hexpand">true</property>
-            <property name="halign">fill</property>
+            <property name="hexpand">false</property>
+            <property name="halign">start</property>
+            <property name="vexpand">false</property>
+            <property name="valign">start</property>
             <property name="margin-start">5</property>
             <property name="margin-top">5</property>
             <property name="margin-bottom">5</property>
@@ -36,8 +39,6 @@
             <child>
               <object class="GtkBox">
                 <property name="orientation">vertical</property>
-                <property name="halign">start</property>
-                <property name="valign">center</property>
                 <child>
                   <object class="GtkLabel" id="name">
                     <property name="ellipsize">end</property>
@@ -61,8 +62,7 @@
                     <property name="ellipsize">end</property>
                     <property name="xalign">0</property>
                     <property name="wrap">False</property>
-                    <property name="lines">1</property>
-                    <property name="vexpand">False</property>
+<!--                    <property name="lines">1</property>-->
                     <binding name="label">
                       <lookup name="author" type="AppItem">
                         <lookup name="item" type="GtkListItem">

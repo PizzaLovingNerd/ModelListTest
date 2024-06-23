@@ -99,7 +99,9 @@ class AppView(Gtk.GridView):
     def __init__(self, category: str):
         category_index[category] = Gio.ListStore()
         super().__init__(model=Gtk.NoSelection.new(category_index[category]), factory=GridItemFactory)
-        self.set_max_columns(5)
+        self.set_max_columns(4)
+        self.set_halign(Gtk.Align.CENTER)
+        self.set_valign(Gtk.Align.FILL)
 
 
 class Test(Gtk.Box):
@@ -115,8 +117,13 @@ class Test(Gtk.Box):
 
         # Create an AppView for each category and add it to the tab view
         for category in categories:
+            scroll = Gtk.ScrolledWindow()
+            scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+            scroll.set_vexpand(True)
+            scroll.set_valign(Gtk.Align.FILL)
             app_view = AppView(category)
-            self.tab_view.append(app_view)
+            scroll.set_child(app_view)
+            self.tab_view.append(scroll)
 
         # Create a new Adw.TabBar
         self.tab_bar = Adw.TabBar()
