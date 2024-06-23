@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This ui file was created by hand, not with Cambalache.                  -->
+<!-- It may need to be pasted into a Cambalache template to be properly used -->
+<interface>
+  <template class="AppGridItem" parent="GtkBox">
+    <property name="orientation">horizontal</property>
+    <property name="spacing">15</property>
+    <style>
+      <class name="card"/>
+    </style>
+    <child>
+      <object class="GtkImage" id="image">
+        <property name="halign">start</property>
+        <property name="icon-name">image-missing-symbolic</property>
+        <property name="pixel-size">32</property>
+        <property name="valign">center</property>
+        <property name="margin-start">15</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="margin-top">15</property>
+        <property name="margin-bottom">15</property>
+        <property name="margin-end">15</property>
+        <child>
+          <object class="GtkLabel" id="name">
+            <property name="ellipsize">end</property>
+            <property name="xalign">0</property>
+            <binding name="label">
+              <lookup name="name" type="AppItem">
+                <lookup name="item" type="GtkListItem">
+                  <constant>Unknown App</constant>
+                </lookup>
+              </lookup>
+            </binding>
+            <style>
+              <class name="title-4"/>
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="author">
+            <property name="ellipsize">end</property>
+            <property name="xalign">0</property>
+            <binding name="label">
+              <lookup name="author" type="AppItem">
+                <lookup name="item" type="GtkListItem">
+                  <constant>Unknown Author</constant>
+                </lookup>
+              </lookup>
+            </binding>
+            <style>
+              <class name="dim-label"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
