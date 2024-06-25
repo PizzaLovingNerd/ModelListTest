@@ -2,14 +2,14 @@ import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Gtk, Adw
-import mytest
+import listtest
 
 class MyWindow(Gtk.ApplicationWindow):
     def __init__(self, app):
         super().__init__(application=app)
         self.set_title("Test Window")
 
-        test = mytest.Test()
+        test = listtest.Test()
         self.set_child(test)
 
 class MyApplication(Gtk.Application):

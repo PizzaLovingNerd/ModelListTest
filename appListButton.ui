@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This ui file was created by hand, not with Cambalache.                  -->
+<!-- It may need to be pasted into a Cambalache template to be properly used -->
+<interface>
+  <template class="GtkListItem">
+    <property name="child">
+      <object class="AdwActionRow">
+        <property name="hexpand">true</property>
+        <property name="halign">fill</property>
+        <property name="vexpand">false</property>
+        <property name="valign">start</property>
+        <property name="title">App Name</property>
+        <property name="subtitle">App Author</property>
+<!--        <property name="height_request">10</property>-->
+<!--        <property name="width_request">30</property>-->
+        <child type="prefix">
+          <object class="GtkImage" id="image">
+            <property name="halign">start</property>
+            <property name="icon-name">image-missing-symbolic</property>
+            <property name="pixel-size">64</property>
+            <property name="valign">center</property>
+          </object>
+        </child>
+      </object>
+    </property>
+  </template>
+</interface>
