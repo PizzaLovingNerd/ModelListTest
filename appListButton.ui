@@ -4,23 +4,124 @@
 <interface>
   <template class="GtkListItem">
     <property name="child">
-      <object class="AdwActionRow">
-        <property name="hexpand">true</property>
-        <property name="halign">fill</property>
-        <property name="vexpand">false</property>
-        <property name="valign">start</property>
-        <property name="title">App Name</property>
-        <property name="subtitle">App Author</property>
-<!--        <property name="height_request">10</property>-->
-<!--        <property name="width_request">30</property>-->
-        <child type="prefix">
-          <object class="GtkImage" id="image">
-            <property name="halign">start</property>
-            <property name="icon-name">image-missing-symbolic</property>
-            <property name="pixel-size">64</property>
-            <property name="valign">center</property>
+      <object class="AdwBin">
+        <child>
+          <object class="GtkBox">
+            <property name="hexpand">true</property>
+            <property name="halign">fill</property>
+            <property name="vexpand">false</property>
+            <property name="valign">start</property>
+            <property name="margin-end">10</property>
+            <property name="spacing">5</property>
+            <child>
+              <object class="GtkImage" id="image">
+                <property name="halign">start</property>
+                <property name="icon-name">image-missing-symbolic</property>
+                <property name="pixel-size">64</property>
+                <property name="valign">center</property>
+                <property name="margin-start">5</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="margin-top">10</property>
+                <property name="margin-bottom">10</property>
+                <property name="margin-start">10</property>
+                <property name="margin-end">10</property>
+                <child>
+                  <object class="GtkLabel" id="name">
+                    <property name="ellipsize">end</property>
+                    <property name="wrap">True</property>
+                    <property name="lines">2</property>
+                    <property name="xalign">0</property>
+                    <binding name="label">
+                      <lookup name="name" type="AppItem">
+                        <lookup name="item" type="GtkListItem">
+                          <constant>GtkListItem</constant>
+                        </lookup>
+                      </lookup>
+                    </binding>
+                    <style>
+                      <class name="title-4"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="author">
+                    <property name="ellipsize">end</property>
+                    <property name="wrap">False</property>
+                    <property name="lines">1</property>
+                    <property name="xalign">0</property>
+                    <binding name="label">
+                      <lookup name="author" type="AppItem">
+                        <lookup name="item" type="GtkListItem">
+                          <constant>GtkListItem</constant>
+                        </lookup>
+                      </lookup>
+                    </binding>
+                    <binding name="visible">
+                      <lookup name="author_visible" type="AppItem">
+                        <lookup name="item" type="GtkListItem">
+                          <constant>GtkListItem</constant>
+                        </lookup>
+                      </lookup>
+                    </binding>
+                    <style>
+                      <class name="dim-label"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <child>
+                  <object class="GtkButton" id="update">
+                    <property name="valign">center</property>
+                    <property name="icon-name">software-update-available-symbolic</property>
+                    <style>
+    <!--              <class name="flat"/>-->
+                      <class name="circular"/>
+                      <class name="accent"/>
+                    </style>
+                    <binding name="visible">
+                      <lookup name="update" type="AppItem">
+                        <lookup name="item" type="GtkListItem">
+                          <constant>GtkListItem</constant>
+                        </lookup>
+                      </lookup>
+                    </binding>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="remove">
+                    <property name="valign">center</property>
+                    <property name="margin-start">5</property>
+                    <property name="icon-name">app-remove-symbolic</property>
+                    <style>
+                      <!--              <class name="flat"/>-->
+                      <class name="circular"/>
+                      <class name="error"/>
+                    </style>
+                    <binding name="visible">
+                      <lookup name="installed" type="AppItem">
+                        <lookup name="item" type="GtkListItem">
+                          <constant>GtkListItem</constant>
+                        </lookup>
+                      </lookup>
+                    </binding>
+                  </object>
+                </child>
+              </object>
+            </child>
           </object>
         </child>
+        <style>
+          <class name="card"/>
+        </style>
       </object>
     </property>
   </template>
